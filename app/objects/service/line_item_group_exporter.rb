@@ -1,6 +1,27 @@
+require 'exporter'
 
-# class LineItemGroupExporter
-#
+class LineItemGroupExporter
+  include CSVExporter
+
+  def initialize &block
+    super
+  end
+
+  mapping do
+    field 'id' => 'id'
+    field 'article_title' => 'self.articles.last.title'
+  end
+
+  header do
+    name %w(id article_title)
+  end
+
+  def file_name
+    "#{ Rails.root }/public/fairmondo_articles.csv"
+  end
+end
+
+
 #  @@csv_options = { col_sep: ";",  encoding: 'utf-8'}
 #
 #  # methods for exporting line_item_group articles with corresponding fields of
