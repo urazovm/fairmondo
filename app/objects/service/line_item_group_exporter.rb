@@ -1,26 +1,32 @@
 require 'exporter'
 
 class LineItemGroupExporter
-  include CSVExporter
+  attr_reader :user, :exporter
 
-  def initialize &block
-    super
+  def initialize user
+    @user = user
   end
 
-  mapping do
-    field 'id' => 'id'
-    field 'article_title' => 'self.articles.last.title'
+  @exporter = Exporter.new do
+    mapping do
+      field id: 'id'
+      field sold_at: :sold_at
+      field article_title: 'self.articles.last.title'
+      field created_at: ->{ created_at }
+      field hallo: nil
+      field foobar: ''
+      field 'hallo' => 'updated_at'
+    end
+
+    file_path "#{ Rails.root }/public/fairmondo_articles.csv"
   end
 
-  header do
-    name %w(id article_title)
-  end
-
-  def file_name
-    "#{ Rails.root }/public/fairmondo_articles.csv"
+  def export &block
+    @exporter.export(block)
   end
 end
 
+# export { @user.seller_line_item_groups.includes(:business_transactions, :articles, :buyer) }
 
 #  @@csv_options = { col_sep: ";",  encoding: 'utf-8'}
 #

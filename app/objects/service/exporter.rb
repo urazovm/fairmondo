@@ -1,18 +1,19 @@
-module CSVExporter
-  attr_accessor :export_mapping, :export_header
-
+class Exporter
   def initialize &block
-    instance_eval &block if block
+    @export_mapping = {}
+    @file_name = ''
+    @csv_options ||= { col_sep: ';',  encoding: 'utf-8' }
+
+    instance_eval(&block) if block_given?
   end
 
-  def self.included base
-    base.extend ClassMethods
+  def build &block
+    initialize(&block)
   end
 
   def export &block
-    CSV.open(file_name, 'wb', csv_options) do |line|
-      binding.pry
-      line << export_header
+    CSV.open(@file_name, 'wb', @csv_options) do |line|
+      line << @export_mapping.keys
 
       yield.find_each do |item|
         line << generate_line_for(item)
@@ -22,45 +23,42 @@ module CSVExporter
 
   private
 
-  def csv_options
-    { col_sep: ';',  encoding: 'utf-8' }
-  end
-
   def generate_line_for item
     attrs = []
-    @export_header.each do |attr|
-      begin
-        attrs << "'#{ item.instance_eval(export_mapping[attr]) }'"
-      rescue
-        attrs << "'#{ export_mapping[attr] }'"
+    @export_mapping.each do |_key, value|
+      case
+      when empty_or_nil_in?(value)
+        attrs << value
+      when string_or_symbol_in?(value)
+        attrs << item.instance_eval(value.to_s)
+      when value.is_a?(Proc)
+        attrs << item.instance_exec(&(value)) if proc_in?(value)
       end
     end
     attrs
   end
 
-  module ClassMethods
-    def export_mapping
-      @export_mapping ||= {}
-    end
+  def empty_or_nil_in? value
+    value == nil || value == ''
+  end
 
-    def export_header
-      @export_header ||= []
-    end
+  def string_or_symbol_in? value
+    value.is_a?(String) || value.is_a?(Symbol)
+  end
 
-    def mapping &block
-      yield
-    end
+  def mapping &block
+    yield
+  end
 
-    def field hash = {}
-      export_mapping.merge! hash
-    end
+  def field hash
+    @export_mapping.merge! hash
+  end
 
-    def header
-      yield
-    end
+  def file_path string
+    @file_name = string
+  end
 
-    def name value
-      export_header << value
-    end
+  def options hash
+    @csv_options = hash
   end
 end
