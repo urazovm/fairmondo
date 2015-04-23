@@ -32,7 +32,7 @@ class BelboonArticleExporter < Exporter::CSVExporter
     field 'Optional_5' => nil
   end
 
-  file_path = Rails.env == 'development' ?
+  file_path Rails.env == 'development' ?
     "#{ Rails.root }/public/fairmondo_articles.csv" :
     '/var/www/fairnopoly/shared/public/system/fairmondo_articles.csv'
 end
