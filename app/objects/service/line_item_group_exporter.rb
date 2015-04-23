@@ -1,9 +1,9 @@
 class LineItemGroupExporter < Exporter::CSVExporter
   mapping do
-    field id: 'id'
+    field id: :id
     field sold_at: ->{ sold_at.strftime('%d.%m.%Y %H:%M') }
     field transaction_id: :purchase_id
-    field article_title: 'self.articles.last.title'
+    field article_title: ->{ self.articles.last.title }
     field created_at: ->{ created_at }
     field shipping_address: ->{ transport_address.instance_exec {
         addr = ''
@@ -29,5 +29,5 @@ class LineItemGroupExporter < Exporter::CSVExporter
     }
   end
 
-  file_path "#{ Rails.root }/public/fairmondo_articles.csv"
+  destination "#{ Rails.root }/public/fairmondo_articles.csv"
 end
