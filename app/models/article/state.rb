@@ -64,6 +64,10 @@ module Article::State
       event :templatify do
         transition preview: :template
       end
+
+      event :buy_out do
+        transition active: :sold
+      end
     end
   end
 

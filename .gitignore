@@ -122,4 +122,6 @@ config/courier.yml
 
 # Foreman Procfile
 Procfile
+
+# Afilliate csv
 public/fairmondo_articles.csv

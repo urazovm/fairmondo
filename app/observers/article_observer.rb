@@ -39,6 +39,10 @@ class ArticleObserver < ActiveRecord::Observer
       cloned_article.templatify
       cloned_article.save # save the cloned article
     end
+
+    if article.state_changed? && article.sold?
+      Indexer.index_article article
+    end
   end
 
   def before_activate(article, _transition)
@@ -47,6 +51,7 @@ class ArticleObserver < ActiveRecord::Observer
   end
 
   def after_activate(article, _transition)
+    article.library_elements.update_all(inactive: false)
     ArticleMailer.delay.article_activation_message(article.id)
     Indexer.index_article article
   end

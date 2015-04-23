@@ -40,6 +40,15 @@ class User < ActiveRecord::Base
   after_create :create_default_library
 
   ####################################################
+  # Scopes
+  #
+  ####################################################
+  scope :sorted_ngo, -> { order(:nickname).where(ngo: true) }
+  scope :ngo_with_profile_image, -> { where(ngo: true).joins(:image).limit(8) }
+  scope :banned, -> { where(banned: true) }
+  scope :unbanned, -> { where('banned = ? OR banned IS NULL', false) }
+
+  ####################################################
   # Methods
   #
   ####################################################
