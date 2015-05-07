@@ -1,0 +1,17 @@
+aside
+  header
+    = render '/users/show_img', user: user_resource
+  nav
+    ul.tabs
+      li.tab
+        = link_to 'Aktive Artikel', user_path(resource, type: :active_articles), remote: true
+      li.tab
+        = link_to 'Sammlungen', user_path(resource, type: :libraries), remote: true
+      li.tab
+        = link_to 'Bewertungen', user_path(resource, type: :ratings), remote: true
+      li.tab
+        = link_to 'Profil', user_path(resource, type: :profile), remote: true
+      - if resource.is_a?(LegalEntity)
+        li.tab
+          = link_to 'Impressum / AGB', user_path(resource, type: :legal_info), remote: true
+

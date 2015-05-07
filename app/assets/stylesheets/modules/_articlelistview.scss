@@ -9,19 +9,22 @@ Styleguide Listview
 .ArticleListview > .ArticleListview-item, .ArticleListview > .ArticleListview-item-with-actions  {
    background: $white;
    margin-bottom:0.5em;
-   @include whitebox;
+   @include shadowless_whitebox;
    @include clearfix;
    padding: 0em;
    position: relative;
 }
-
+.ArticleListview-item:nth-child(odd) {
+  background-color: $even-lighter-gray;
+}
+.ArticleListview-item-with-actions:nth-child(odd) {
+  background-color: $even-lighter-gray;
+}
 .ArticleListview-image {
   line-height: 0em;
   img {
-         width: 100%;
-         border-top-left-radius: 0.5em;
-         border-bottom-left-radius: 0.5em;
-      }
+    width: 100%;
+  }
 }
 
 .ArticleListview-title {
@@ -83,7 +86,6 @@ Styleguide Listview
 
   @include till-breakpoint($bp-tablet-horizontal) {
     .ArticleListview-actions { clear: both; border-top: 1px solid $lighter-gray; }
-    .ArticleListview-image { img { border-bottom-left-radius: 0; }}
   }
 
   @include between-breakpoints($bp-tablet-horizontal,$bp-desktop) {

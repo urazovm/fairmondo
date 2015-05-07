@@ -36,7 +36,7 @@ feature 'User profile page' do
   scenario 'user looks at his profile' do
     @user = FactoryGirl.create :user
     login_as @user
-    visit profile_user_path(@user)
+    visit user_path(@user)
     page.must_have_content @user.nickname
   end
 
@@ -50,8 +50,9 @@ feature 'User profile page' do
   scenario "guests visits a legal entity's profile page" do
     user = FactoryGirl.create :legal_entity
     visit user_path user
-    click_link I18n.t 'common.text.about_terms_short'
-    current_path.must_equal profile_user_path user
+    click_link I18n.t 'users.headers.legal_info'
+    current_path.must_equal user_path(user)
+    page.must_have_content('Impressum und Kontakt')
   end
 end
 
@@ -60,10 +61,10 @@ feature 'contacting users' do
     receiver = FactoryGirl.create :legal_entity
     sender   = FactoryGirl.create :user
     login_as sender
-    visit profile_user_path receiver
+    visit user_path receiver
 
-    within('.user-menu') do
-      click_link I18n.t 'users.profile.contact.heading'
+    within('.user-type') do
+      click_link I18n.t 'users.actions.contact'
     end
   end
 

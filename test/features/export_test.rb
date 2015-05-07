@@ -21,19 +21,19 @@ feature 'Exports' do
     attach_file('mass_upload_file', 'test/fixtures/mass_upload_correct_upload_export_test.csv')
     click_button I18n.t('mass_uploads.labels.upload_article')
 
-    visit user_path(legal_entity)
+    visit user_path(legal_entity, type: :inactive_articles)
 
-    click_link I18n.t('articles.export.inactive')
+    click_link I18n.t('users.export.articles')
 
     page.source.must_equal IO.read('test/fixtures/mass_upload_export.csv', encoding: 'ascii-8bit') # page source returns ascii-8 bit
 
-    visit user_path(legal_entity)
+    visit user_path(legal_entity, type: :mass_uploads)
     # activate all articles
     click_link I18n.t('mass_uploads.labels.show_report')
     click_button I18n.t('mass_uploads.labels.mass_activate_articles')
 
-    visit user_path(legal_entity)
-    click_link I18n.t('articles.export.active')
+    visit user_path(legal_entity, type: :active_articles)
+    click_link I18n.t('users.export.articles')
 
     page.source.must_equal IO.read('test/fixtures/mass_upload_export.csv', encoding: 'ascii-8bit')
   end
@@ -43,7 +43,8 @@ feature 'Exports' do
     visit new_mass_upload_path
     attach_file('mass_upload_file', 'test/fixtures/export_upload_social_producer.csv')
     click_button I18n.t('mass_uploads.labels.upload_article')
-    click_link I18n.t('articles.export.inactive')
+    visit user_path(legal_entity, type: :active_articles)
+    click_link I18n.t('users.export.articles')
 
     page.source.must_equal IO.read('test/fixtures/export_social_producer.csv', encoding: 'ascii-8bit')
   end

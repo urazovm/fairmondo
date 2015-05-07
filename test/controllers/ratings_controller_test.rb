@@ -29,8 +29,8 @@ describe RatingsController do
   describe 'GET ::index' do
     it 'should render rating\'s index_template' do
       get(:index, user_id: seller.id)
-      assert_response :success
-      assert_template(:index)
+      assert_response :redirect
+      assert_redirected_to(user_path(seller, type: 'ratings'))
     end
   end
 

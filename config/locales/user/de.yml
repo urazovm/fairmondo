@@ -65,6 +65,18 @@ de:
       you: "Du"
       invitor: "Einladender"
       invited_people: "Eingeladene Benutzer"
+      active_articles: 'Aktive Artikel'
+      inactive_articles: 'Inaktive Artikel'
+      templates: 'Vorlagen'
+      seller_line_item_groups: 'Verkäufe'
+      buyer_line_item_groups: 'Einkäufe'
+      dashboard: 'Dashboard'
+      libraries: 'Sammlungen'
+      ratings: 'Bewertungen'
+      mass_uploads: 'CSV-Dateien'
+      profile: 'Profil'
+      edit_profile: 'Profil bearbeiten'
+      legal_info: 'Impressum / AGB'
     text:
       no_active_old: "Keine vorhanden"
       no_active: "Stelle hier Deinen ersten Artikel ein"
@@ -81,6 +93,7 @@ de:
     actions:
       edit_account: "Profil bearbeiten"
       show_account: "Profil"
+      contact: 'Nutzer*in kontaktieren'
     menu:
       edit: "Profil bearbeiten"
       community: "Vertrauensgemeinschaft"
@@ -112,3 +125,5 @@ de:
         articles: 'Alle Artikel'
     notices:
       sepa_missing: 'Wir haben Änderungen am Lastschriftverfahren vorgenommen. Bitte bestätige deine Zustimmung zum Bankeinzug erneut.'
+    export:
+      articles: 'Artikel als CSV-Datei exportieren'

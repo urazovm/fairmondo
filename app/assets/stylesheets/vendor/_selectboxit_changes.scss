@@ -24,7 +24,7 @@
   background: white;
 }
 .selectboxit-btn {
-  border-radius: 0.5em;
+  border-radius: 0.2em;
   border: 2px solid $light-gray;
 }
 
@@ -50,7 +50,7 @@
   background-color: white;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px $even-lighter-gray;
 }
 .selectboxit-list .selectboxit-option-anchor {
   color: #333;
@@ -73,5 +73,3 @@
   line-height: 1.7em;
   }
 }
-
-

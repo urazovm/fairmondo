@@ -34,8 +34,8 @@ feature 'Uploading a CSV' do
     assert_difference 'Article.count', 3 do
       click_button I18n.t('mass_uploads.labels.upload_article')
     end
-    page.must_have_content I18n.t('users.boxes.my_mass_uploads')
-    click_link I18n.t('mass_uploads.labels.show_report')
+    page.must_have_content I18n.t('users.headers.mass_uploads')
+    click_link I18n.t('users.headers.mass_uploads')
     page.must_have_content('Name von Artikel 1')
     page.must_have_button I18n.t('mass_uploads.labels.mass_activate_articles')
     click_button I18n.t('mass_uploads.labels.mass_activate_articles')

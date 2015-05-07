@@ -51,4 +51,55 @@ module UsersHelper
       safe_join([heading, value])
     end
   end
+
+  def user_profile_partial_for params
+    case params['type']
+    when 'dashboard'
+      render 'users/show/dashboard',
+        item_name: :dashboard
+    when 'sales'
+      render 'users/show/line_item_groups',
+        line_item_groups: sold_line_item_groups,
+        item_name: :seller_line_item_groups
+    when 'purchases'
+      render 'users/show/line_item_groups',
+        line_item_groups: bought_line_item_groups,
+        item_name: :buyer_line_item_groups
+    when 'active_articles'
+      render 'users/show/articles',
+        articles: active_articles.page(params[:page]).per(20),
+        item_name: :active_articles,
+        item_link: new_article_path
+    when 'inactive_articles'
+      render 'users/show/articles',
+        articles: inactive_articles.page(params[:page]).per(20),
+        item_name: :inactive_articles,
+        item_link: new_article_path
+    when 'templates'
+      render 'users/show/articles',
+        articles: @user.article_templates.page(params[:page]).per(20),
+        item_name: :templates
+    when 'ratings'
+      render 'users/show/ratings',
+        item_name: :ratings,
+        ratings: @user.ratings.includes(rating_user: [:image]).page(params[:page]).per(20)
+    when 'libraries'
+      render 'users/show/libraries',
+        item_name: :libraries,
+        libraries: @user.libraries.page(params[:page]).per(12),
+        library: @user.libraries.build
+    when 'profile'
+      render 'users/show/profile',
+        item_name: :profile
+    when 'edit_profile'
+      render 'users/show/edit_profile',
+        item_name: :edit_profile
+    when 'mass_uploads'
+      render 'users/show/mass_uploads',
+        item_name: :mass_uploads
+    when 'legal_info'
+      render 'users/show/legal_info',
+        item_name: :legal_info
+    end
+  end
 end

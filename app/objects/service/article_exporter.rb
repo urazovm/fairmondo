@@ -26,10 +26,10 @@ class ArticleExporter
     private
 
     def determine_articles_to_export user, params
-      if params == 'active'
+      if params == 'active_articles'
         user.articles.where(state: 'active').order('created_at ASC')
           .includes(:images, :categories, :social_producer_questionnaire, :fair_trust_questionnaire)
-      elsif params == 'inactive'
+      elsif params == 'inactive_articles'
         user.articles.where('state = ? OR state = ?', 'preview', 'locked').order('created_at ASC')
           .includes(:images, :categories, :social_producer_questionnaire, :fair_trust_questionnaire)
       end

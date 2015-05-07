@@ -74,7 +74,7 @@ describe ArticleTemplatesController do
 
       it 'redirects to the collection' do
         post :create, article: valid_attributes
-        assert_redirected_to(user_url @user, anchor: 'my_article_templates')
+        assert_redirected_to(user_url @user, type: 'templates')
       end
     end
 
@@ -114,7 +114,7 @@ describe ArticleTemplatesController do
 
       it 'redirects to the collection' do
         put :update, id: @article_template.to_param, article: valid_update_attributes
-        assert_redirected_to(user_url(@user, anchor: 'my_article_templates'))
+        assert_redirected_to(user_url(@user, type: 'templates'))
       end
     end
 
@@ -144,7 +144,7 @@ describe ArticleTemplatesController do
 
     it 'redirects to the article_templates list' do
       delete :destroy, id: @article_template.to_param
-      assert_redirected_to(user_url(@user, anchor: 'my_article_templates'))
+      assert_redirected_to(user_url(@user, type: 'templates'))
     end
   end
 end

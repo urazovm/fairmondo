@@ -1,93 +1,112 @@
 @import "mixins/all";
 
-.user-header {
-  @include clearfix;
-  margin-bottom:2em;
-}
-
-.user-header > .user-profile {
-  @include between-breakpoints($bp-mobile-horizontal-big,$bp-tablet) {
-    @include span(1 of 2 0.1);
-  }
-
-  @include between-breakpoints($bp-tablet,$bp-tablet-horizontal) {
-    @include span(2 of 5 0.1);
-  }
-
-  @include between-breakpoints($bp-tablet-horizontal,$bp-desktop) {
-    @include span(2 of 7 0.1);
-  }
-
-  @include at-breakpoint($bp-desktop) {
-    @include span(1 of 4 0.1);
+.user-container {
+  width: 100%;
+  hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid $white;
+    border-bottom: 1px solid $even-lighter-gray;
   }
 }
 
-.user-header > .user-middle {
-
-  @include between-breakpoints($bp-mobile-horizontal-big,$bp-tablet) {
-    @include span(1 of 2 0.1);
-    @include omega;
-  }
-
-  @include between-breakpoints($bp-tablet,$bp-tablet-horizontal) {
-    @include span(3 of 5 0.1);
-    @include omega;
-  }
-
-  @include between-breakpoints($bp-tablet-horizontal,$bp-desktop) {
-    @include span(3 of 7 0.1);
-  }
-
-  @include at-breakpoint($bp-desktop) {
-    @include span(2 of 4 0.1);
-  }
-
+.user-container > aside {
+  @include span(2 of 12);
+  float: left;
 }
 
-.user-header > .user-extra {
+.user-container > aside > header > .user {
+  font-size: 1em;
+}
 
-
-  @include till-breakpoint($bp-tablet-horizontal) {
-    display:none;
-  }
-
-  @include between-breakpoints($bp-tablet-horizontal,$bp-desktop) {
-    @include span(2 of 7 0.1);
-    @include omega;
-  }
-
-  @include at-breakpoint($bp-desktop) {
-    @include span(1 of 4 0.1);
-    @include omega;
+.user-container > aside > header >.user > .user-image {
+  position: relative;
+  img {
+    width: 13em;
+    height: 13em;
+    margin-bottom: 0.5em;
   }
 }
 
-.user-header > .user-extra > .take_part  {
-  @include whitebox;
-  background-color: #5F9537;
-  color: $white;
-  text-align: center;
+.user-container > aside > nav > .tabs {
+  @include clear-links;
+  margin-top: 1em;
+  margin-bottom: 0;
+  padding-left: 0;
+  a { outline: 0 }
 
-  .Button{
+  .tab:not(.is-active) {
+    @include color-links($blue, lighten($blue, 10%));
+    border-right: 1px solid $even-lighter-gray;
+    a {
+      i {
+        position: relative;
+        top: -1px;
+      }
+      &:active i {
+        top: 0;
+      }
+    }
+  }
+  .tab:not(.is-active).tab:hover {
+    border-right: 3px solid lighten($blue, 20%);
+    background-color: darken($white, 2%)
+  }
+  .tab {
+    display: inline-block;
+    padding: 0.7em 0.9em;
+    position: relative;
+    top: 1px;
+    font-weight: 600;
+    min-width: 3em;
+    background-color: $white;
+    width: 97%;
+  }
+  .is-active.tab {
+    //background-color:  $even-lighter-gray;
+    //border-top: 1px solid $even-lighter-gray;
+    border-left: 3px solid $blue;
+    border-right: none;
+    //border-bottom: 1px solid $even-lighter-gray;
+    width: 97%;
+    a {
+      color: $gray;
+      text-shadow: 0px 1px 0px white; // letterpress effect
+      cursor: default;
+    }
+  }
+
+  ul {
+    list-stlye: none;
+  }
+}
+
+.user-container > .user-container--main {
+  @include span(10 of 12);
+  float: right;
+  @include omega;
+  //background-color: $even-lighter-gray;
+  min-height: 800px;
+}
+
+.user-container > .user-container--main > section {
+  padding-left: 2em;
+  padding-right: 1em;
+
+  nav {
+    text-align: right;
     margin-bottom: 1em;
   }
-
-  img {
-    width: 100%;
+  nav > #library-form {
+    text-align: left !important;
   }
 }
 
-.user-middle > .user-menu {
-  max-width: 20em;
-  clear:both;
-  margin-top:2em;
+.user-libraries {
+  display: block;
 }
-
-.user-middle > .user-menu > .Button {
-  margin:0.5em;
-
-  display:block;
+.pagination {
+  clear: both;
 }
 
 .article_templates,.mass_uploads-table {

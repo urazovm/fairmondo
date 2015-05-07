@@ -8,7 +8,7 @@ Styleguide Article
 
 .Article {
   border: 1px solid $lighter-gray;
-  border-radius:1em;
+  border-radius: 0.2em;
   padding:0;
   //margin-bottom: 1em;
 }
@@ -21,8 +21,8 @@ Styleguide Article
     //min-height: 235px;
     margin-left: auto;
     margin-right: auto;
-    border-top-left-radius: 0.9em;
-    border-top-right-radius: 0.9em;
+    border-top-left-radius: 0.2em;
+    border-top-right-radius: 0.2em;
   }
 }
 

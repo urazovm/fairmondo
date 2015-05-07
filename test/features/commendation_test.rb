@@ -34,7 +34,7 @@ feature 'Article commendations' do
 
   scenario 'user visits seller with ecologic article' do
     Chewy::Query.any_instance.stubs(:to_a).raises(Faraday::ConnectionFailed.new('test')) # simulate connection error so that we dont have to use elastic
-    visit user_path(@seller)
+    visit user_path(@seller, type: 'active_articles')
     within('.Article-tags') do
       page.must_have_content(I18n.t 'formtastic.labels.article.ecologic')
     end

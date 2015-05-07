@@ -1,7 +1,11 @@
 .Lineitemgroup {
-  @include whitebox;
+  @include shadowless_whitebox;
   @include clearfix;
   margin-bottom: 0.5em;
+}
+
+.Lineitemgroup:nth-child(odd) {
+  background-color: $even-lighter-gray;
 }
 
 
@@ -17,7 +21,6 @@
 .Lineitemgroup-images {
   img {
     max-width: 8em;
-    border-radius: 0.5em;
     margin-right: 0.5em;
   }
   img:last-child {

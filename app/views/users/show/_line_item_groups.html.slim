@@ -1,15 +1,18 @@
-= accordion_item item_name do
-  - if line_item_groups.empty?
-    p
-      strong= t("users.text.no_#{item_name}")
-  - else
-    - line_item_groups.select { |lig| lig.articles.any? }.each do |group|
-      = render 'line_item_groups/shared/listitem',
-        line_item_group: group
-    = paginate line_item_groups,
-      link_attributes: { data: {scroll: false} },
-      params: { active_accordion: item_name },
-      param_name: "#{item_name}_page"
+section.replace-me
+  header
+    h1
+      = t("users.headers.#{ item_name }")
+  nav
+  section
+    - if line_item_groups.empty?
+      p
+        strong
+          = t("users.text.no_#{ item_name }")
+    - else
+      - line_item_groups.select { |lig| lig.articles.any? }.each do |group|
+        = render 'line_item_groups/shared/listitem',
+          line_item_group: group
+      = paginate line_item_groups
 
 / - if current_user.type == 'LegalEntity' && item_name == 'seller_line_item_groups'
 /   .export.JS-active-toggle--container

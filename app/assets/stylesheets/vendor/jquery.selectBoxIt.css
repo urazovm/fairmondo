@@ -36,7 +36,7 @@
   cursor: pointer;
   margin: 0;
   padding: 0;
-  border-radius: 6px;
+  border-radius: 2px;
   overflow: hidden;
   display: block;
   position: relative;
@@ -88,7 +88,7 @@
   cursor: pointer;
   display: none;
   z-index: 9999999999999;
-  border-radius: 6px;
+  border-radius: 2px;
   text-align: left;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -114,8 +114,8 @@
 
 /* The first Drop Down option */
 .selectboxit-option-first {
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
 }
 
 /* The first Drop Down option optgroup */
@@ -126,8 +126,8 @@
 
 /* The last Drop Down option */
 .selectboxit-option-last {
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
 }
 
 /* Drop Down optgroup headers */

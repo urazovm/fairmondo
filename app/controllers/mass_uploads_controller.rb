@@ -29,7 +29,7 @@ class MassUploadsController < ApplicationController
     @mass_upload = current_user.mass_uploads.build(params.for(MassUpload).refine)
     authorize @mass_upload
     @mass_upload.process if @mass_upload.save
-    respond_with @mass_upload, location: -> { user_path(@mass_upload.user, anchor: 'my_mass_uploads') }
+    respond_with @mass_upload, location: -> { user_path(@mass_upload.user, type: 'mass_uploads') }
   end
 
   def update

@@ -45,7 +45,7 @@ class RatingsController < ApplicationController
 
   def index
     @ratings = @user.ratings.page(params[:page])
-    respond_with(@ratings)
+    redirect_to user_path(@user, type: :ratings)
   end
 
   private

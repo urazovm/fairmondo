@@ -1,0 +1,152 @@
+/
+/
+/ == License:
+/ Fairmondo - Fairmondo is an open-source online marketplace.
+/ Copyright (C) 2013 Fairmondo eG
+/
+/ This file is part of Fairmondo.
+/
+/ Fairmondo is free software: you can redistribute it and/or modify
+/ it under the terms of the GNU Affero General Public License as
+/ published by the Free Software Foundation, either version 3 of the
+/ License, or (at your option) any later version.
+/
+/ Fairmondo is distributed in the hope that it will be useful,
+/ but WITHOUT ANY WARRANTY; without even the implied warranty of
+/ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/ GNU Affero General Public License for more details.
+/
+/ You should have received a copy of the GNU Affero General Public License
+/ along with Fairmondo.  If not, see <http://www.gnu.org/licenses/>.
+/
+= semantic_form_for(@user, html: {multipart: true, autocomplete: "off", class: 'js-visual-submit'}, url: registration_path(resource), builder: ::Fairtastic::FormBuilder) do |f|
+  = f.semantic_errors
+  = f.input_step :account, default_step: true do
+    h4= "#{ t('formtastic.labels.user.image')} : "
+    p
+      = image_tag(@user.image_url(:profile), class: "img-polaroid ")
+      - f.object.build_image unless f.object.image # Build the Image object for the form
+      = f.semantic_fields_for :image do |image|
+        = f.inputs do
+          = image.input :image, label: false, as: :file, tooltip: true, required: false
+
+    .visibility
+      = current_user.is_a?(LegalEntity) ? t('users.visibility.public') : t('users.visibility.private')
+
+    h3= t('users.title.login')
+    = f.inputs do
+      = f.input :email
+
+      = f.input :password,  label: t('users.change_password'), input_html: { autocomplete: "off"}, required: false
+      = f.input :password_confirmation
+      = render partial: '/devise/registrations/password_complexity'
+      = f.input :current_password
+
+    .visibility
+      = t('users.visibility.public')
+    h3
+      = t('users.title.state')
+    = f.input :vacationing,as: :boolean, tooltip: true
+    = f.input :newsletter, as: :boolean, tooltip: true
+    = f.input :receive_comments_notification, tooltip: true
+
+  - @user.standard_address ||= resource.addresses.build
+  - @user.standard_address.valid?
+  = f.input_step :contact, has_errors: @user.standard_address.errors.any? do
+    = f.inputs do
+
+      - f.semantic_errors :standard_address
+      .visibility
+        = current_user.is_a?(LegalEntity) ? t('users.visibility.public') : t('users.visibility.private')
+
+      - if current_user.is_a?(LegalEntity)
+        h3= t('users.form_titles.contact_person')
+      = semantic_fields_for @user.standard_address do |af|
+        = af.inputs do
+          = af.input :title, as: :select, collection: [t('common.title.woman'),t('common.title.man')]
+          = af.input :first_name, required: true
+          = af.input :last_name, required: true
+
+      .visibility
+        = current_user.is_a?(LegalEntity) ? t('users.visibility.public') : t('users.visibility.private')
+
+        h3= t('users.form_titles.address')
+        = semantic_fields_for @user.standard_address do |af|
+          = af.inputs do
+            - if @user.is_a?(LegalEntity)
+              = af.input :company_name
+            = af.input :address_line_1, required: true
+            = af.input :address_line_2
+            = af.input :zip, required: true
+            = af.input :city, required: true
+            = af.input :country, required: true, as: :select, collection: [t('users.countries.germany')]
+
+        = f.input :phone
+        = f.input :mobile
+        = f.input :fax
+
+      .visibility
+        = t('users.visibility.private')
+        h3= 'Deine Versandaddressen'
+
+        = render 'addresses/addresses', radio: false
+        = link_to 'neue Adresse hinzufügen', new_user_address_path(@user), { class: 'ungrouped_colorbox' }
+
+  = f.input_step :profile, tooltip: true do
+    = f.inputs do
+      .visibility
+        = t('users.visibility.public')
+
+        h4= "#{ t('formtastic.labels.user.about_me') }"
+
+        = f.input :about_me, label:false, as: :text, limit: 2500,
+          size: 6,
+          input_html: { class: 'tinymce' }
+        = tinymce
+
+
+  - if current_user.is_a?(LegalEntity)
+    = render partial: '/devise/registrations/edit_legal', locals: {f: f}
+
+  = f.input_step :unified_transport do
+    = f.inputs do
+        h3.unified_transport_title
+          = t('users.title.unified_transport')
+          span.sprite_helper title=t('users.hints.unified_transport')
+
+        = f.input :unified_transport_provider, :input_html => { :placeholder => t('article.transport.placeholders.type2_provider') }
+        = f.input :unified_transport_price
+        = f.input :unified_transport_maximum_articles, wrapper_html: {class: "unified_transport_maximum_articles"}
+        = t('users.unified_warning')
+
+        h3.free_transport_title
+          = t('users.title.free_at_transport')
+          span.sprite_helper title=t('users.hints.free_at_transport')
+        = f.input :free_transport_available, wrapper_html: {class: "free_transport_available"}
+        = f.input :free_transport_at_price, wrapper_html: {class: "free_transport_at_price_cents"}
+
+  = f.input_step :payment, tooltip: true do
+    = f.inputs do
+      h3= t('users.form_titles.payment_bank_account')
+
+      = f.input :bank_account_owner, required: true, label: t('formtastic.labels.user.bank_account_owner')
+      = f.input :bank_name, input_html: {id: "bank_name"}, label: t('formtastic.labels.user.bank_name')
+
+      = f.input :iban, required: true, input_html: {id: "iban"}, label: t('formtastic.labels.user.iban'), tooltip: true
+      = f.input :bic, required: true, input_html: {id: "bic"}, label: t('formtastic.labels.user.bic'), tooltip: true
+
+      / only LegalEntities will be billed for fees
+      - if resource.is_a?(LegalEntity)
+        - direct_debit_link = link_to t('formtastic.labels.user.sepa'), '/sepa?layout=false', target: '_blank', class: 'ungrouped_colorbox'
+        = f.input :direct_debit, required: true, label: t('formtastic.labels.user.direct_debit_html').html_safe + direct_debit_link
+
+      h3= t('users.form_titles.payment_paypal')
+
+      = f.input :paypal_account, label: t('formtastic.labels.user.paypal_account'), tooltip: true
+      = f.input :fastbill_profile_update, as: :hidden, input_html: { value: true }
+  = f.actions do
+    = f.action :submit, button_html: {class: "Button"}
+
+- content_for :view_specific_scripts do
+= javascript_include_tag 'inputs/bank_details'
+= javascript_include_tag 'inputs/newsletter_status'
