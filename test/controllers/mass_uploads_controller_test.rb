@@ -74,7 +74,7 @@ describe MassUploadsController do
         mass_upload = MassUpload.last
         mass_upload.finish!
         post :update, id: MassUpload.last.id
-        assert_redirected_to user_path(user)
+        assert_redirected_to user_path(user, type: :active_articles)
         MassUpload.last.articles.first.active?.must_equal true
       end
     end

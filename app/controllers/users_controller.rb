@@ -40,7 +40,11 @@ class UsersController < ApplicationController
   def show
     authorize @user
     @articles = ActiveUserArticles.new(@user).paginate(params[:active_articles_page])
-    @params = params['type'].present? ? params : params.merge!({ 'type' => 'dashboard' })
+    if user_signed_in? && @user == current_user
+      @params = params['type'].present? ? params : params.merge!({ type: :dashboard })
+    else
+      @params = params['type'].present? ? params : params.merge!({ type: :active_articles })
+    end
   end
 
   def contact

@@ -53,53 +53,89 @@ module UsersHelper
   end
 
   def user_profile_partial_for params
-    case params['type']
-    when 'dashboard'
-      render 'users/show/dashboard',
-        item_name: :dashboard
-    when 'sales'
-      render 'users/show/line_item_groups',
-        line_item_groups: sold_line_item_groups,
-        item_name: :seller_line_item_groups
-    when 'purchases'
-      render 'users/show/line_item_groups',
-        line_item_groups: bought_line_item_groups,
-        item_name: :buyer_line_item_groups
-    when 'active_articles'
-      render 'users/show/articles',
-        articles: active_articles.page(params[:page]).per(20),
-        item_name: :active_articles,
-        item_link: new_article_path
-    when 'inactive_articles'
-      render 'users/show/articles',
-        articles: inactive_articles.page(params[:page]).per(20),
-        item_name: :inactive_articles,
-        item_link: new_article_path
-    when 'templates'
-      render 'users/show/articles',
-        articles: @user.article_templates.page(params[:page]).per(20),
-        item_name: :templates
-    when 'ratings'
-      render 'users/show/ratings',
-        item_name: :ratings,
-        ratings: @user.ratings.includes(rating_user: [:image]).page(params[:page]).per(20)
-    when 'libraries'
-      render 'users/show/libraries',
-        item_name: :libraries,
-        libraries: @user.libraries.page(params[:page]).per(12),
-        library: @user.libraries.build
-    when 'profile'
-      render 'users/show/profile',
-        item_name: :profile
-    when 'edit_profile'
+    if policy(@user).show_private? || public_profile_templates.include?(params['type'])
+      self.send("render_#{ params['type'] }")
+    else
+      render_active_articles
+    end
+  end
+
+  def public_profile_templates
+    %w(active_articles libraries ratings profile legal_info)
+  end
+
+  def render_dashboard
+    render 'users/show/dashboard',
+      item_name: :dashboard
+  end
+
+  def render_sales
+    render 'users/show/line_item_groups',
+      line_item_groups: sold_line_item_groups,
+      item_name: :seller_line_item_groups
+  end
+
+  def render_purchases
+    render 'users/show/line_item_groups',
+      line_item_groups: bought_line_item_groups,
+      item_name: :buyer_line_item_groups
+  end
+
+  def render_active_articles
+    render 'users/show/articles',
+      articles: active_articles.page(params[:page]).per(20),
+      item_name: :active_articles,
+      item_link: new_article_path
+  end
+
+  def render_inactive_articles
+    render 'users/show/articles',
+      articles: inactive_articles.page(params[:page]).per(20),
+      item_name: :inactive_articles,
+      item_link: new_article_path
+  end
+
+  def render_templates
+    render 'users/show/articles',
+      articles: @user.article_templates.page(params[:page]).per(20),
+      item_name: :templates
+  end
+
+  def render_ratings
+    render 'users/show/ratings',
+      item_name: :ratings,
+      ratings: @user.ratings.includes(rating_user: [:image]).page(params[:page]).per(20)
+  end
+
+  def render_libraries
+    render 'users/show/libraries',
+      item_name: :libraries,
+      libraries: @user.libraries.page(params[:page]).per(12),
+      library: @user.libraries.build
+  end
+
+  def render_profile
+    render 'users/show/profile',
+      item_name: :profile
+  end
+
+  def render_edit_profile
+    if @user == current_user
       render 'users/show/edit_profile',
         item_name: :edit_profile
-    when 'mass_uploads'
-      render 'users/show/mass_uploads',
-        item_name: :mass_uploads
-    when 'legal_info'
-      render 'users/show/legal_info',
-        item_name: :legal_info
+    else
+      render 'users/show/profile',
+        item_name: :profile
     end
+  end
+
+  def render_mass_uploads
+    render 'users/show/mass_uploads',
+      item_name: :mass_uploads
+  end
+
+  def render_legal_info
+    render 'users/show/legal_info',
+      item_name: :legal_info
   end
 end

@@ -36,7 +36,7 @@ class MassUploadsController < ApplicationController
     authorize @mass_upload
     @mass_upload.mass_activate
     flash[:notice] = I18n.t('article.notices.mass_upload_create_html').html_safe
-    redirect_to user_path(@mass_upload.user)
+    redirect_to user_path(@mass_upload.user, type: :active_articles)
   end
 
   private

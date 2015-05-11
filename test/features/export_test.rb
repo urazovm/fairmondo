@@ -43,6 +43,8 @@ feature 'Exports' do
     visit new_mass_upload_path
     attach_file('mass_upload_file', 'test/fixtures/export_upload_social_producer.csv')
     click_button I18n.t('mass_uploads.labels.upload_article')
+    click_link I18n.t('mass_uploads.labels.show_report_activate')
+    click_button I18n.t('mass_uploads.labels.mass_activate_articles')
     visit user_path(legal_entity, type: :active_articles)
     click_link I18n.t('users.export.articles')
 

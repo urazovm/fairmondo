@@ -17,7 +17,7 @@ aside
         = link_to 'Vorlagen', user_path(resource, type: :templates), remote: true
       - if resource.is_a?(LegalEntity) && resource.mass_uploads.any?
         li.tab
-          = link_to 'CSV-Uploads', user_path(resource, type: :mass_uploads), remote: true
+          = link_to 'CSV-Dateien', user_path(resource, type: :mass_uploads), remote: true
       li.tab
         = link_to 'Sammlungen', user_path(resource, type: :libraries), remote: true
       li.tab

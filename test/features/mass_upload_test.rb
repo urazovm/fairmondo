@@ -35,13 +35,14 @@ feature 'Uploading a CSV' do
       click_button I18n.t('mass_uploads.labels.upload_article')
     end
     page.must_have_content I18n.t('users.headers.mass_uploads')
-    click_link I18n.t('users.headers.mass_uploads')
+    click_link I18n.t('mass_uploads.labels.show_report_activate')
     page.must_have_content('Name von Artikel 1')
     page.must_have_button I18n.t('mass_uploads.labels.mass_activate_articles')
     click_button I18n.t('mass_uploads.labels.mass_activate_articles')
     page.wont_have_selector('h1', text: I18n.t('mass_uploads.titles.uploaded_articles'))
     page.must_have_selector('a', text: Article.last.title)
 
+    click_link I18n.t('users.headers.mass_uploads')
     click_link I18n.t('mass_uploads.labels.show_report')
     page.wont_have_selector('input.Btn.Btn--green.Btn--greenSmall')
     page.must_have_content I18n.t('mass_uploads.labels.all_articles_activated')
