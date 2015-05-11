@@ -92,6 +92,7 @@
 #= require visual/touchhover
 #= require visual/truncator
 #= require visual/wait_for_submit
+#= require visual/nav_toggle
 
 #= require inputs/password_complexify
 #= require inputs/socialshareprivacy
