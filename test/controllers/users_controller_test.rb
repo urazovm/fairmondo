@@ -33,6 +33,11 @@ describe UsersController do
         assert_response :success
       end
 
+      it 'should render active_articles' do
+        xhr :get, :show, id: @user.id, type: :active_articles
+        assert_template partial: 'users/show/articles'
+      end
+
       it 'render deleted user for banned users' do
         @user.update_attribute(:banned, true)
         get :show, id: @user

@@ -53,15 +53,35 @@ module UsersHelper
   end
 
   def user_profile_partial_for params
-    if policy(@user).show_private? || public_profile_templates.include?(params['type'])
-      self.send("render_#{ params['type'] }")
+    if in_policy_scope?
+      send("render_#{ params['type'] }")
+    elsif show_private_template?(params)
+      send("render_#{ params['type'] }")
+    elsif show_legal_template?(params)
+      send("render_#{ params['type'] }")
     else
       render_active_articles
     end
   end
 
-  def public_profile_templates
-    %w(active_articles libraries ratings profile legal_info)
+  def in_policy_scope?
+    policy(@user).show_private_for_legal? || policy(@user).show_private_for_private?
+  end
+
+  def show_private_template?(params)
+    !in_policy_scope? && @user.is_a?(PrivateUser) && public_private_profile_templates.include?(params['type'])
+  end
+
+  def show_legal_template?(params)
+    !in_policy_scope? && @user.is_a?(LegalEntity) && public_legal_profile_templates.include?(params['type'])
+  end
+
+  def public_private_profile_templates
+    %w(active_articles libraries ratings profile)
+  end
+
+  def public_legal_profile_templates
+    public_private_profile_templates << 'legal_info'
   end
 
   def render_dashboard

@@ -28,13 +28,21 @@ class UserPolicy < Struct.new(:user, :resource)
     true unless banned?
   end
 
-  def show_private?
-    @user == resource && user_signed_in?
+  def show_private_for_legal?
+    user.is_a?(LegalEntity) && own?
+  end
+
+  def show_private_for_private?
+    user.is_a?(PrivateUser) && own?
   end
 
   private
 
   def banned?
     resource.banned?
+  end
+
+  def own?
+    user == resource
   end
 end
