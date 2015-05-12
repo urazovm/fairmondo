@@ -3,8 +3,7 @@ aside
     = render '/users/show_img', user: user_resource
   nav
     ul.tabs
-      - [:dashboard, :sales, :purchases, :active_articles, :inactive_articles, :templates,
-        :mass_uploads, :libraries, :ratings, :legal_info, :profile, :edit_profile].each do |item|
+      - navpoints_own.each do |item|
         li.tab class=(params['type'] == item.to_s ? 'is-active' : '')
           a href=user_path(resource, type: item) data-push='true' data-target='.replace-me'
             = t("users.headers.#{item}")

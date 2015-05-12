@@ -26,12 +26,23 @@ section.replace-me
         .ArticleListview
           - articles.each do |article|
             = render layout: '/articles/shared/listitem', locals: { article: article, actions: true } do
-              - if policy(article).edit?
-                =< link_to t('article.titles.edit'), edit_article_path(article.id)
-              - else
-                =< link_to t('article.titles.edit'), new_article_path(edit_as_new: article.id)
-              =< link_to t('common.actions.destroy'), article_path(article.id), method: :delete, remote: true
-              =< link_to t('article.labels.deactivate'), article_path(article.id, deactivate: true), method: :put, confirm: t('article.deactivate_confirm'), remote: true
+              .ArticleListview-profile-actions
+                - unless item_name == :templates
+                  - if policy(article).edit?
+                    =< link_to t('article.titles.edit'), edit_article_path(article.id)
+                  - else
+                    =< link_to t('article.titles.edit'), new_article_path(edit_as_new: article.id)
+                  - unless item_name == :inactive_articles
+                    =< " | "
+                    =< link_to t('article.labels.deactivate'), article_path(article.id, deactivate: true), method: :put, confirm: t('article.deactivate_confirm'), remote: true
+                  =< " | "
+                  =< link_to t('common.actions.destroy'), article_path(article.id), method: :delete, remote: true
+                - else
+                  = link_to "Vorlage bearbeiten", edit_article_template_path(article)
+                  =< " | "
+                  = link_to "Vorlage übernehmen", new_article_path(:template => { article_id: article.id  })
+                  =< " | "
+                  = link_to "Vorlage löschen", article_template_path(article), method: :delete, data: {confirm: t('common.actions.confirm') }
 
         = paginate articles
 

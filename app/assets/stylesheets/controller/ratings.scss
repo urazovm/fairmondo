@@ -4,6 +4,28 @@
 
 .rating_form > .rating_form-inner {
   @include whitebox;
+
+  ol {
+    min-height: 6em;
+  }
+
+  .fa-custom {
+    font-size: 5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .fa-smile-o {
+    color: green;
+    margin-right: 0.5em;
+  }
+  .fa-meh-o {
+    color: orange;
+    margin-right: 0.5em;
+  }
+  .fa-frown-o {
+    color: red;
+  }
 }
 
 .rating_form .rating-choice span{

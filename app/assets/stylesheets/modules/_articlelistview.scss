@@ -27,6 +27,12 @@ Styleguide Listview
   }
 }
 
+.ArticleListview-profile-actions {
+  text-align: right;
+  padding-right: 1em;
+  padding-top: 0.5em;
+}
+
 .ArticleListview-title {
   overflow: hidden;
   text-overflow: ellipsis;

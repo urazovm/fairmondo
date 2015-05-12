@@ -3,6 +3,7 @@ aside
     = render '/users/show_img', user: user_resource
   nav
     ul.tabs
-      - [:active_articles, :libraries, :ratings, :legal_info, :profile].each do |item|
+      - navpoints_other.each do |item|
         li.tab class=(params['type'] == item.to_s ? 'is-active' : '')
-          = link_to t("users.headers.#{item}"), user_path(resource, type: item), remote: true, data: navigation_push
+          a href=user_path(resource, type: item) data-push='true' data-target='.replace-me'
+            = t("users.headers.#{item}")

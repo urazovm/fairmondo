@@ -88,6 +88,24 @@ module UsersHelper
     public_private_profile_templates << 'legal_info'
   end
 
+  def own_legal_profile_templates
+    [:dashboard, :sales, :purchases, :active_articles, :inactive_articles, :templates,
+    :mass_uploads, :libraries, :ratings, :legal_info, :profile, :edit_profile]
+  end
+
+  def own_private_profile_templates
+    [:dashboard, :sales, :purchases, :active_articles, :inactive_articles, :templates,
+     :libraries, :ratings, :profile, :edit_profile]
+  end
+
+  def navpoints_other
+    @user.is_a?(LegalEntity) ? public_legal_profile_templates : public_private_profile_templates
+  end
+
+  def navpoints_own
+    @user.is_a?(LegalEntity) ? own_legal_profile_templates : own_private_profile_templates
+  end
+
   def render_dashboard
     render 'users/show/dashboard',
       item_name: :dashboard
