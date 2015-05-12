@@ -33,7 +33,7 @@ guard 'livereload' do
   watch(%r{public/.+\.(css|js|html)})
   watch(%r{config/locales/.+\.yml})
   # Rails Assets Pipeline
-  watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|js|html|png|jpg))).*}) { |m| "/assets/#{m[3]}" }
+  watch(%r{(app|vendor)(/assets/\w+/(.+\.(coffee|scss|css|js|html|png|jpg))).*}) { |m| "/assets/#{m[3]}" }
 end
 
 guard 'ctags-bundler', src_path: %w(app lib) do

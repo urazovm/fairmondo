@@ -1,6 +1,8 @@
-$(document).ready(function(e){
-  $('li.tab').click(function(e){
-    $(this).siblings().removeClass('is-active');
-    $(this).addClass('is-active');
+$(document).always(function(){
+  $('li.tab').each(function(){
+    $(this).find('a').click(function(){
+      $(this).closest('li.tab').siblings().removeClass('is-active');
+      $(this).closest('li.tab').addClass('is-active');
+    });
   });
 });

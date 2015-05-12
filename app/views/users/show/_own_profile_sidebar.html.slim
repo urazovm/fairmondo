@@ -3,32 +3,8 @@ aside
     = render '/users/show_img', user: user_resource
   nav
     ul.tabs
-      li.tab
-        = link_to 'Dashboard', user_path(resource, type: :dashboard), remote: true
-      li.tab
-        = link_to 'Verkäufe', user_path(resource, type: :sales), remote: true
-      li.tab
-        = link_to 'Einkäufe', user_path(resource, type: :purchases), remote: true
-      li.tab
-        = link_to 'Aktive Artikel', user_path(resource, type: :active_articles), remote: true
-      li.tab
-        = link_to 'Inaktive Artikel', user_path(resource, type: :inactive_articles), remote: true
-      li.tab
-        = link_to 'Vorlagen', user_path(resource, type: :templates), remote: true
-      - if resource.is_a?(LegalEntity) && resource.mass_uploads.any?
-        li.tab
-          = link_to 'CSV-Dateien', user_path(resource, type: :mass_uploads), remote: true
-      li.tab
-        = link_to 'Sammlungen', user_path(resource, type: :libraries), remote: true
-      li.tab
-        = link_to 'Bewertungen', user_path(resource, type: :ratings), remote: true
-      /li.tab
-        = link_to 'Nachrichten', user_path(resource, type: :messages), remote: true
-      - if resource.is_a?(LegalEntity)
-        li.tab
-          = link_to 'Impressum / AGB', user_path(resource, type: :legal), remote: true
-      li.tab
-        = link_to 'Profil', user_path(resource, type: :profile), remote: true
-      li.tab
-        = link_to 'Profil bearbeiten', user_path(resource, type: :edit_profile), remote: true
-
+      - [:dashboard, :sales, :purchases, :active_articles, :inactive_articles, :templates,
+        :mass_uploads, :libraries, :ratings, :legal_info, :profile, :edit_profile].each do |item|
+        li.tab class=(params['type'] == item.to_s ? 'is-active' : '')
+          a href=user_path(resource, type: item) data-push='true' data-target='.replace-me'
+            = t("users.headers.#{item}")

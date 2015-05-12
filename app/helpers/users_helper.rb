@@ -25,7 +25,11 @@ module UsersHelper
   end
 
   def active_articles
-    resource.articles.where('state = ?', :active).includes(:images, :seller).page(params[:active_articles_page])
+    if @user == current_user
+      resource.articles.where('state = ?', :active).includes(:images, :seller).page(params[:active_articles_page])
+    else
+      @articles
+    end
   end
 
   def inactive_articles

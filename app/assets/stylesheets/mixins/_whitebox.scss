@@ -1,6 +1,6 @@
 // Makes contentboxes out of elements
 @mixin whitebox {
-  border-radius: 0.2em;
+  border-radius: 0.3em;
   border: 1px solid $lighter-gray;
   //box-shadow: $even-lighter-gray 0px 0px 2px 1px;
   padding: em(10) em(20);

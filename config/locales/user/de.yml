@@ -63,8 +63,6 @@ de:
     user_image: "Nutzerbild"
     headers:
       you: "Du"
-      invitor: "Einladender"
-      invited_people: "Eingeladene Benutzer"
       active_articles: 'Aktive Artikel'
       inactive_articles: 'Inaktive Artikel'
       templates: 'Vorlagen'
@@ -77,6 +75,8 @@ de:
       profile: 'Profil'
       edit_profile: 'Profil bearbeiten'
       legal_info: 'Impressum / AGB'
+      sales: 'Verkäufe'
+      purchases: 'Einkäufe'
     text:
       no_active_old: "Keine vorhanden"
       no_active: "Stelle hier Deinen ersten Artikel ein"
