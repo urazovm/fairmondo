@@ -4,6 +4,6 @@ aside
   nav
     ul.tabs
       - navpoints_other.each do |item|
-        li.tab class=(params['type'] == item.to_s ? 'is-active' : '')
+        li.tab class=(params['type'].to_s == item.to_s ? 'is-active' : '')
           a href=user_path(resource, type: item) data-push='true' data-target='.replace-me'
             = t("users.headers.#{item}")

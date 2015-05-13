@@ -35,6 +35,7 @@ class UsersController < ApplicationController
 
   def profile
     authorize @user
+    redirect_to user_path(@user, type: :profile)
   end
 
   def show
