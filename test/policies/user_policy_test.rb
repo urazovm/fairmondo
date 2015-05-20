@@ -29,13 +29,53 @@ describe UserPolicy do
 
   describe 'for a visitor' do
     it { subject.must_permit(:show)    }
+    it { subject.must_permit(:active_articles)    }
+    it { subject.must_permit(:libraries)    }
+    it { subject.must_permit(:ratings)    }
     it { subject.must_permit(:profile) }
+    it { subject.must_permit(:legal_info)             }
+    it { subject.must_deny(:dashboard)             }
+    it { subject.must_deny(:inactive_articles)             }
+    it { subject.must_deny(:templates)             }
+    it { subject.must_deny(:sales)             }
+    it { subject.must_deny(:purchases)             }
+    it { subject.must_deny(:edit_profile)             }
+    it { subject.must_deny(:mass_uploads)             }
   end
 
   describe 'for a random logged-in user' do
     let(:user) { FactoryGirl.create :user }
 
     it { subject.must_permit(:show)             }
+    it { subject.must_permit(:active_articles)    }
+    it { subject.must_permit(:libraries)    }
+    it { subject.must_permit(:ratings)    }
     it { subject.must_permit(:profile)          }
+    it { subject.must_permit(:legal_info)             }
+    it { subject.must_deny(:dashboard)             }
+    it { subject.must_deny(:inactive_articles)             }
+    it { subject.must_deny(:templates)             }
+    it { subject.must_deny(:sales)             }
+    it { subject.must_deny(:purchases)             }
+    it { subject.must_deny(:edit_profile)             }
+    it { subject.must_deny(:mass_uploads)             }
+  end
+
+  describe 'for own profile' do
+    let(:user) { resource }
+
+    it { subject.must_permit(:show)             }
+    it { subject.must_permit(:active_articles)             }
+    it { subject.must_permit(:libraries)             }
+    it { subject.must_permit(:ratings)             }
+    it { subject.must_permit(:profile)             }
+    it { subject.must_permit(:dashboard)             }
+    it { subject.must_permit(:inactive_articles)             }
+    it { subject.must_permit(:legal_info)             }
+    it { subject.must_permit(:templates)             }
+    it { subject.must_permit(:sales)             }
+    it { subject.must_permit(:purchases)             }
+    it { subject.must_permit(:edit_profile)             }
+    it { subject.must_permit(:mass_uploads)             }
   end
 end

@@ -23,10 +23,9 @@
 
 .user-container
   / render sidebar
-  - if resource.is? current_user
-    = render 'users/show/own_profile_sidebar', resource: resource
-  - else
-    = render 'users/show/other_profile_sidebar', resource: resource
+  = render 'users/show/sidebar', resource: resource,
+    nav_entries: resource.is?(current_user) ? navpoints_own : navpoints_other
+
   / render main area of user page
   .user-container--main
-    = user_profile_partial_for @params
+    = yield

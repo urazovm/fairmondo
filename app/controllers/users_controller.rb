@@ -25,26 +25,22 @@ class UsersController < ApplicationController
   respond_to :js, if: lambda { request.xhr? }
   respond_to :pdf, only: :profile
 
-  before_action :check_for_complete_mass_uploads, only: [:show]
   before_action :set_user
+  before_action :check_for_complete_mass_uploads, only: [:show], if: -> { own? }
   before_action :dont_cache, only: [:show]
-  before_action :sanitize_print_param, only: [:profile]
-  skip_before_action :authenticate_user!, only: [:show, :profile, :contact]
+  before_action :sanitize_print_param, only: [:legal_info]
+  skip_before_action :authenticate_user!,
+    only: [:show, :contact, :active_articles, :profile, :ratings, :libraries,
+           :legal_info]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_deleted
 
-  def profile
-    authorize @user
-    redirect_to user_path(@user, type: :profile)
-  end
-
   def show
     authorize @user
-    @articles = ActiveUserArticles.new(@user).paginate(params[:active_articles_page])
-    if user_signed_in? && @user == current_user
-      @params = params['type'].present? ? params : params.merge!({ type: :dashboard })
+    if own?
+      redirect_to dashboard_user_path(@user)
     else
-      @params = params['type'].present? ? params : params.merge!({ type: :active_articles })
+      redirect_to active_articles_user_path(@user)
     end
   end
 
@@ -52,7 +48,79 @@ class UsersController < ApplicationController
     render layout: false
   end
 
+  def dashboard
+    authorize @user
+    render :dashboard
+  end
+
+  def active_articles
+    authorize @user
+    @articles = set_active_articles.page(params[:active_articles_page]).per(12)
+    render :articles
+  end
+
+  def inactive_articles
+    authorize @user
+    @articles = set_inactive_articles.page(params[:active_articles_page]).per(12)
+    render :articles
+  end
+
+  def templates
+    authorize @user
+    @articles = set_templates.page(params[:active_articles_page]).per(12)
+    render :articles
+  end
+
+  def legal_info
+    authorize @user
+    render :legal_info
+  end
+
+  def ratings
+    authorize @user
+    @ratings = @user.ratings.includes(rating_user: [:image]).page(params[:page]).per(20)
+    render :ratings
+  end
+
+  def profile
+    authorize @user
+    render :profile
+  end
+
+  def libraries
+    authorize @user
+    @libraries = set_user_libraries.page(params[:page]).per(12)
+    @library = @user.libraries.build
+    render :libraries
+  end
+
+  def sales
+    authorize @user
+    @line_item_groups = set_sold_line_item_groups.page(params[:page]).per(12)
+    render :line_item_groups
+  end
+
+  def purchases
+    authorize @user
+    @line_item_groups = set_bought_line_item_groups.page(params[:page]).per(12)
+    render :line_item_groups
+  end
+
+  def mass_uploads
+    authorize @user
+    render :mass_uploads
+  end
+
+  def edit_profile
+    authorize @user
+    render :edit_profile
+  end
+
   private
+
+  def own?
+    @user == current_user
+  end
 
   def user_deleted
     render :user_deleted
@@ -73,6 +141,51 @@ class UsersController < ApplicationController
   def sanitize_print_param
     if params[:print] && %w(terms cancellation).include?(params[:print])
       @print = params[:print]
+    end
+  end
+
+  def set_active_articles
+    if own?
+      @user.articles
+        .where('state = ?', :active)
+        .includes(:title_image, :seller)
+    else
+      @articles = ActiveUserArticles.new(@user)
+        .paginate(params[:active_articles_page])
+    end
+  end
+
+  def set_inactive_articles
+    @user.articles
+      .where('state = ? OR state = ? OR state = ?', :preview, :locked, :inactive)
+      .includes(:title_image, :seller)
+  end
+
+  def set_templates
+    @articles = @user.article_templates
+  end
+
+  def set_bought_line_item_groups
+    @user.buyer_line_item_groups
+      .sold
+      .includes(:seller, :rating, business_transactions: [article: [:seller, :title_image]])
+      .order(updated_at: :desc)
+  end
+
+  def set_sold_line_item_groups
+    @user.seller_line_item_groups
+      .sold
+      .includes(:buyer, :rating, business_transactions: [article: [:title_image]])
+      .order(updated_at: :desc)
+  end
+
+  def set_user_libraries
+    if own?
+      @user.libraries
+        .includes(:library_elements)
+    else
+      @user.libraries.where(public: true)
+        .includes(:library_elements)
     end
   end
 end

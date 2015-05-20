@@ -118,14 +118,27 @@ Fairmondo::Application.routes.draw do
 
   resources :users, only: [:show] do
     resources :addresses, except: [:index, :show]
-    resources :libraries, except: [:new, :edit]
+    resources :libraries, except: [:new, :edit, :index, :show]
     resources :library_elements, only: [:create, :destroy]
-    resources :ratings, only: [:create, :index] do
+    resources :ratings, only: [:create] do
       get '/:line_item_group_id', to: 'ratings#new', as: 'line_item_group', on: :new
     end
     member do
-      get 'profile'
       get 'contact'
+
+      # routes for user profile
+      get 'dashboard'
+      get 'sales'
+      get 'purchases'
+      get 'active_articles'
+      get 'inactive_articles'
+      get 'templates'
+      get 'mass_uploads'
+      get 'libraries'
+      get 'ratings'
+      get 'profile'
+      get 'legal_info'
+      get 'edit_profile'
     end
   end
 

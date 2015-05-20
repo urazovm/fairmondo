@@ -26,7 +26,6 @@ class RatingsController < ApplicationController
   before_action :set_user
   # before_filter :set_business_transaction, only: :new
   before_action :set_line_item_group, only: :new
-  skip_before_action :authenticate_user!, only: :index
 
   def new
     @rating = Rating.new(line_item_group_id: @line_item_group.id)
@@ -41,11 +40,6 @@ class RatingsController < ApplicationController
     authorize @rating
     @rating.save
     respond_with(@rating, location: -> { user_path(current_user) })
-  end
-
-  def index
-    @ratings = @user.ratings.page(params[:page])
-    redirect_to user_path(@user, type: :ratings)
   end
 
   private

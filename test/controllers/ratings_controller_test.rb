@@ -26,14 +26,6 @@ describe RatingsController do
   let(:buyer) { FactoryGirl.create :user }
   let(:line_item_group) { FactoryGirl.create :line_item_group, seller: seller, buyer: buyer }
 
-  describe 'GET ::index' do
-    it 'should render rating\'s index_template' do
-      get(:index, user_id: seller.id)
-      assert_response :redirect
-      assert_redirected_to(user_path(seller, type: 'ratings'))
-    end
-  end
-
   describe 'POST ::create' do
     before do
       @rating_attrs = FactoryGirl.attributes_for(:rating, line_item_group_id: line_item_group.id)

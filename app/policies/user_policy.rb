@@ -20,20 +20,56 @@
 # along with Fairmondo.  If not, see <http://www.gnu.org/licenses/>.
 #
 class UserPolicy < Struct.new(:user, :resource)
-  def profile?
-    true unless banned?
-  end
-
   def show?
     true unless banned?
   end
 
-  def show_private_for_legal?
-    user.is_a?(LegalEntity) && own?
+  def active_articles?
+    show?
   end
 
-  def show_private_for_private?
-    user.is_a?(PrivateUser) && own?
+  def legal_info?
+    show?
+  end
+
+  def ratings?
+    show?
+  end
+
+  def profile?
+    show?
+  end
+
+  def libraries?
+    show?
+  end
+
+  def inactive_articles?
+    own_and_not_banned?
+  end
+
+  def dashboard?
+    own_and_not_banned?
+  end
+
+  def sales?
+    own_and_not_banned?
+  end
+
+  def purchases?
+    own_and_not_banned?
+  end
+
+  def mass_uploads?
+    own_and_not_banned?
+  end
+
+  def edit_profile?
+    own_and_not_banned?
+  end
+
+  def templates?
+    own_and_not_banned?
   end
 
   private
@@ -44,5 +80,9 @@ class UserPolicy < Struct.new(:user, :resource)
 
   def own?
     user == resource
+  end
+
+  def own_and_not_banned?
+    own? &&!banned?
   end
 end

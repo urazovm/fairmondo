@@ -24,6 +24,7 @@ class ArticlesController < ApplicationController
 
   responders :location
   respond_to :html
+  respond_to :js, if: lambda { request.xhr? }
   respond_to :json, only: [:show, :index]
 
   rescue_from ActiveRecord::RecordNotFound, with: :similar_articles,

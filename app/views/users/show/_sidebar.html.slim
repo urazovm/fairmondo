@@ -1,0 +1,9 @@
+aside
+  header
+    = render '/users/show_img', user: user_resource
+  nav
+    ul.tabs
+      - nav_entries.each do |entry|
+        li.tab class=(item_name.to_s == entry.to_s ? 'is-active' : '')
+          a href=send("#{ entry }_user_path", resource) data-push='true' data-target='.replace-me'
+            = t("users.headers.#{ entry }")

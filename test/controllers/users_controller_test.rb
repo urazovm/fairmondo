@@ -30,73 +30,68 @@ describe UsersController do
 
       it 'should be successful' do
         get :show, id: @user
-        assert_response :success
+        assert_redirected_to active_articles_user_path
       end
 
       it 'should render active_articles' do
-        xhr :get, :show, id: @user.id, type: :active_articles
-        assert_template partial: 'users/show/_articles', count: 1
+        get :active_articles, id: @user.id
+        assert_response :success
       end
 
       it 'should render libraries' do
-        xhr :get, :show, id: @user.id, type: :libraries
-        assert_template partial: 'users/show/_libraries', count: 1
+        get :libraries, id: @user.id
+        assert_response :success
       end
 
       it 'should render ratings' do
-        xhr :get, :show, id: @user.id, type: :ratings
-        assert_template partial: 'users/show/_ratings', count: 1
+        get :ratings, id: @user.id
+        assert_response :success
       end
 
       it 'should render profile' do
-        xhr :get, :show, id: @user.id, type: :profile
-        assert_template partial: 'users/show/_profile', count: 1
+        get :profile, id: @user.id
+        assert_response :success
       end
 
       it 'should render legal_info' do
         @user.update_attribute :type, 'LegalEntity'
-        xhr :get, :show, id: @user.id, type: :legal_info
-        assert_template partial: 'users/show/_legal_info', count: 1
+        get :legal_info, id: @user.id
+        assert_response :success
       end
 
       it 'should not render inactive_articles' do
-        xhr :get, :show, id: @user.id, type: :inactive_articles
-        assert_template partial: 'users/show/_articles'
+        get :inactive_articles, id: @user.id
+        assert_redirected_to new_user_session_path
       end
 
       it 'should not render dashboard' do
-        xhr :get, :show, id: @user.id, type: :dashboard
-        assert_template partial: 'users/show/_dashboard', count: 0
-        assert_template partial: 'users/show/_articles'
+        get :dashboard, id: @user.id
+        assert_redirected_to new_user_session_path
       end
 
       it 'should not render edit_profile' do
-        xhr :get, :show, id: @user.id, type: :edit_profile
-        assert_template partial: 'users/show/_edit_profile', count: 0
-        assert_template partial: 'users/show/_articles'
+        get :edit_profile, id: @user.id
+        assert_redirected_to new_user_session_path
       end
 
       it 'should not render mass_uploads' do
-        xhr :get, :show, id: @user.id, type: :mass_uploads
-        assert_template partial: 'users/show/_mass_uploads', count: 0
-        assert_template partial: 'users/show/_articles'
+        get :mass_uploads, id: @user.id
+        assert_redirected_to new_user_session_path
       end
 
       it 'should not render sales' do
-        xhr :get, :show, id: @user.id, type: :sales
-        assert_template partial: 'users/show/_line_item_groups', count: 0
-        assert_template partial: 'users/show/_articles'
+        get :sales, id: @user.id
+        assert_redirected_to new_user_session_path
       end
 
       it 'should not render purchases' do
-        xhr :get, :show, id: @user.id, type: :purchases
-        assert_template partial: 'users/show/_line_item_groups', count: 0
-        assert_template partial: 'users/show/_articles'
+        get :purchases, id: @user.id
+        assert_redirected_to new_user_session_path
       end
 
-      it 'should render articles partial for templates' do
-        xhr :get, :show, id: @user.id, type: :templates
-        assert_template partial: 'users/show/_articles'
+      it 'should not render templates' do
+        get :templates, id: @user.id
+        assert_redirected_to new_user_session_path
       end
 
       it 'render deleted user for banned users' do
@@ -115,81 +110,69 @@ describe UsersController do
 
       it 'should be successful' do
         get :show, id: @user
-        assert_response :success
+        assert_redirected_to dashboard_user_path
       end
 
       it 'should render active_articles' do
-        xhr :get, :show, id: @user.id, type: :active_articles
-        assert_template partial: 'users/show/_articles', count: 1
+        get :active_articles, id: @user.id
+        assert_response :success
       end
 
       it 'should render libraries' do
-        xhr :get, :show, id: @user.id, type: :libraries
-        assert_template partial: 'users/show/_libraries', count: 1
+        get :libraries, id: @user.id
+        assert_response :success
       end
 
       it 'should render ratings' do
-        xhr :get, :show, id: @user.id, type: :ratings
-        assert_template partial: 'users/show/_ratings', count: 1
+        get :ratings, id: @user.id
+        assert_response :success
       end
 
       it 'should render profile' do
-        xhr :get, :show, id: @user.id, type: :profile
-        assert_template partial: 'users/show/_profile', count: 1
-      end
-
-      it 'should render inactive_articles' do
-        xhr :get, :show, id: @user.id, type: :inactive_articles
-        assert_template partial: 'users/show/_articles'
-      end
-
-      it 'should render dashboard' do
-        xhr :get, :show, id: @user.id, type: :dashboard
-        assert_template partial: 'users/show/_dashboard', count: 1
-      end
-
-      it 'should render edit_profile' do
-        xhr :get, :show, id: @user.id, type: :edit_profile
-        assert_template partial: 'users/show/_edit_profile', count: 1
-      end
-
-      it 'should render sales' do
-        xhr :get, :show, id: @user.id, type: :sales
-        assert_template partial: 'users/show/_line_item_groups', count: 1
-      end
-
-      it 'should render purchases' do
-        xhr :get, :show, id: @user.id, type: :purchases
-        assert_template partial: 'users/show/_line_item_groups', count: 1
-      end
-
-      it 'should render templates (articles)' do
-        xhr :get, :show, id: @user.id, type: :templates
-        assert_template partial: 'users/show/_articles', count: 1
-      end
-
-      it 'should render mass_uploads' do
-        @user.update_column :type, 'LegalEntity'
-        xhr :get, :show, id: @user.id, type: :mass_uploads
-        assert_template partial: 'users/show/_mass_uploads', count: 1
+        get :profile, id: @user.id
+        assert_response :success
       end
 
       it 'should render legal_info' do
-        @user.update_column :type, 'LegalEntity'
-        xhr :get, :show, id: @user.id, type: :legal_info
-        assert_template partial: 'users/show/_legal_info', count: 1
+        @user.update_attribute :type, 'LegalEntity'
+        get :legal_info, id: @user.id
+        assert_response :success
       end
-    end
-  end
 
-  describe "GET 'profile'" do
-    before :each do
-      @user = FactoryGirl.create(:legal_entity)
-    end
+      it 'should not render inactive_articles' do
+        get :inactive_articles, id: @user.id
+        assert_response :success
+      end
 
-    it 'should be successful' do
-      get :profile, id: @user, format: :pdf, print: 'terms'
-      assert_response :success
+      it 'should not render dashboard' do
+        get :dashboard, id: @user.id
+        assert_response :success
+      end
+
+      it 'should not render edit_profile' do
+        get :edit_profile, id: @user.id
+        assert_response :success
+      end
+
+      it 'should not render mass_uploads' do
+        get :mass_uploads, id: @user.id
+        assert_response :success
+      end
+
+      it 'should not render sales' do
+        get :sales, id: @user.id
+        assert_response :success
+      end
+
+      it 'should not render purchases' do
+        get :purchases, id: @user.id
+        assert_response :success
+      end
+
+      it 'should not render templates' do
+        get :templates, id: @user.id
+        assert_response :success
+      end
     end
   end
 

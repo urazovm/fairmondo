@@ -1,9 +1,0 @@
-aside
-  header
-    = render '/users/show_img', user: user_resource
-  nav
-    ul.tabs
-      - navpoints_own.each do |item|
-        li.tab class=(params['type'] == item.to_s  || params['type'] == item ? 'is-active' : '')
-          a href=user_path(resource, type: item) data-push='true' data-target='.replace-me'
-            = t("users.headers.#{item}")

@@ -1,0 +1,24 @@
+= render layout: 'users/show.html.slim' do
+  section.replace-me
+    header
+      h1
+        = t("users.headers.#{ item_name }")
+    nav
+      / New library form
+      - if @library && policy(@library).create?
+        #library-form
+          h3= t('library.new')
+          = semantic_form_for(@library, url: user_libraries_path(current_user),
+            namespace: 'new') do |f|
+            = f.inputs do
+              = f.input :name, required: false, input_html: { autocomplete: 'off' }
+              = f.input :public, label: false
+            = f.actions do
+              = f.action :submit , value: t('library.create'),
+                button_html: { class: 'Button' }
+    .user-libraries
+      - if @libraries.any?
+        = render partial: 'libraries/library', collection: @libraries
+      - else
+        p= t('libraries.no_library')
+    = paginate @libraries

@@ -29,14 +29,15 @@ class MassUploadsController < ApplicationController
     @mass_upload = current_user.mass_uploads.build(params.for(MassUpload).refine)
     authorize @mass_upload
     @mass_upload.process if @mass_upload.save
-    respond_with @mass_upload, location: -> { user_path(@mass_upload.user, type: 'mass_uploads') }
+    redirect_to mass_uploads_user_path(@mass_upload.user)
+    #respond_with @mass_upload, location: -> { mass_uploads_user_path(@mass_upload.user) }
   end
 
   def update
     authorize @mass_upload
     @mass_upload.mass_activate
     flash[:notice] = I18n.t('article.notices.mass_upload_create_html').html_safe
-    redirect_to user_path(@mass_upload.user, type: :active_articles)
+    redirect_to active_articles_user_path(@mass_upload.user)
   end
 
   private
