@@ -176,6 +176,7 @@ group :development, :test do
   gem 'capistrano'
   gem 'capistrano-bundler', '~> 1.1.2'
   gem 'capistrano-rbenv'
+  gem 'capistrano-sidekiq'
 
   gem 'minitest' # Testing using Minitest
   gem 'minitest-matchers'

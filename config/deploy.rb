@@ -22,9 +22,6 @@ set :deploy_to, '/var/www/fairnopoly'
 # Default value for :scm is :git
 set :scm, :git
 
-# Default value for :format is :pretty
-# set :format, :pretty
-
 # Default value for :log_level is :debug
 set :log_level, :info
 
@@ -37,10 +34,6 @@ set :linked_dirs, %w{log tmp/pids public/system public/assets tmp/cache}
 set :keep_releases, 10
 
 set :ssh_options, forward_agent: true
-
-# Sidekiq
-# set :sidekiq_role, :sidekiq
-# set :sidekiq_pid, ->{ "tmp/pids/sidekiq.pid" }
 
 namespace :deploy do
   desc 'Restart application'

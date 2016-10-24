@@ -8,6 +8,8 @@ require 'capistrano/deploy'
 
 require 'capistrano/bundler'
 
+require 'capistrano/sidekiq'
+
 # Includes tasks from other gems included in your Gemfile
 require 'capistrano/rails'
 
